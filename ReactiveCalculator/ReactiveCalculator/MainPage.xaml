@@ -5,7 +5,18 @@
              x:Class="ReactiveCalculator.MainPage">
 
     <ContentPage.BindingContext> <local:MainViewModel/></ContentPage.BindingContext>
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -30,36 +41,50 @@
                IsEnabled="False"
                Text="{Binding Number}"/>
 
-        <Button Text="%" Grid.Row="2" Grid.Column="0"/>
-        <Button Text="√" Grid.Row="2" Grid.Column="1"/>
-        <Button Text="x²" Grid.Row="2" Grid.Column="2"/>
-        <Button Text="¹/ₓ" Grid.Row="2" Grid.Column="3"/>
+            <Button Text="%" Grid.Row="2" Grid.Column="0"/>
+            <Button Text="√" Grid.Row="2" Grid.Column="1"/>
+            <Button Text="x²" Grid.Row="2" Grid.Column="2"/>
+            <Button Text="¹/ₓ" Grid.Row="2" Grid.Column="3"/>
 
-        <Button Text="CE" Grid.Row="3" Grid.Column="0" Command="{Binding Clear}"/>
-        <Button Text="C" Grid.Row="3" Grid.Column="1" Command="{Binding Clear}"/>
-        <Button Text="◀" Grid.Row="3" Grid.Column="2" Command="{Binding Backspace}"/>
-        <Button Text="÷" Grid.Row="3" Grid.Column="3"/>
+            <Button Text="CE" Grid.Row="3" Grid.Column="0" Command="{Binding Clear}"/>
+            <Button Text="C" Grid.Row="3" Grid.Column="1" Command="{Binding Clear}"/>
+            <Button Text="◀" Grid.Row="3" Grid.Column="2" Command="{Binding Backspace}"/>
+            <Button Text="÷" Grid.Row="3" Grid.Column="3"/>
 
-        <Button Text="7" Grid.Row="4" Grid.Column="0" Command="{Binding Append}" CommandParameter="7"/>
-        <Button Text="8" Grid.Row="4" Grid.Column="1" Command="{Binding Append}" CommandParameter="8"/>
-        <Button Text="9" Grid.Row="4" Grid.Column="2" Command="{Binding Append}" CommandParameter="9"/>
-        <Button Text="×" Grid.Row="4" Grid.Column="3"/>
+            <Button Text="7" Grid.Row="4" Grid.Column="0" Command="{Binding Append}" CommandParameter="7"/>
+            <Button Text="8" Grid.Row="4" Grid.Column="1" Command="{Binding Append}" CommandParameter="8"/>
+            <Button Text="9" Grid.Row="4" Grid.Column="2" Command="{Binding Append}" CommandParameter="9"/>
+            <Button Text="×" Grid.Row="4" Grid.Column="3"/>
 
-        <Button Text="4" Grid.Row="5" Grid.Column="0" Command="{Binding Append}" CommandParameter="4"/>
-        <Button Text="5" Grid.Row="5" Grid.Column="1" Command="{Binding Append}" CommandParameter="5"/>
-        <Button Text="6" Grid.Row="5" Grid.Column="2" Command="{Binding Append}" CommandParameter="6"/>
-        <Button Text="-" Grid.Row="5" Grid.Column="3"/>
+            <Button Text="4" Grid.Row="5" Grid.Column="0" Command="{Binding Append}" CommandParameter="4"/>
+            <Button Text="5" Grid.Row="5" Grid.Column="1" Command="{Binding Append}" CommandParameter="5"/>
+            <Button Text="6" Grid.Row="5" Grid.Column="2" Command="{Binding Append}" CommandParameter="6"/>
+            <Button Text="-" Grid.Row="5" Grid.Column="3"/>
 
-        <Button Text="1" Grid.Row="6" Grid.Column="0" Command="{Binding Append}" CommandParameter="1"/>
-        <Button Text="2" Grid.Row="6" Grid.Column="1" Command="{Binding Append}" CommandParameter="2"/>
-        <Button Text="3" Grid.Row="6" Grid.Column="2" Command="{Binding Append}" CommandParameter="3"/>
-        <Button Text="+" Grid.Row="6" Grid.Column="3" Command="{Binding Add}"/>
+            <Button Text="1" Grid.Row="6" Grid.Column="0" Command="{Binding Append}" CommandParameter="1"/>
+            <Button Text="2" Grid.Row="6" Grid.Column="1" Command="{Binding Append}" CommandParameter="2"/>
+            <Button Text="3" Grid.Row="6" Grid.Column="2" Command="{Binding Append}" CommandParameter="3"/>
+            <Button Text="+" Grid.Row="6" Grid.Column="3" Command="{Binding Add}"/>
 
 
-        <Button Text="±" Grid.Row="7" Grid.Column="0" Command="{Binding Negate}"/>
-        <Button Text="0" Grid.Row="7" Grid.Column="1" Command="{Binding Append}" CommandParameter="0"/>
-        <Button Text="." Grid.Row="7" Grid.Column="2"/>
-        <Button Text="=" Grid.Row="7" Grid.Column="3" Command="{Binding Calculate}"/>
+            <Button Text="±" Grid.Row="7" Grid.Column="0" Command="{Binding Negate}"/>
+            <Button Text="0" Grid.Row="7" Grid.Column="1" Command="{Binding Append}" CommandParameter="0"/>
+            <Button Text="." Grid.Row="7" Grid.Column="2"/>
+            <Button Text="=" Grid.Row="7" Grid.Column="3" Command="{Binding Calculate}"/>
+        </Grid>
+
+        <ListView Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Expressions}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="15,0">
+                            <Label Text="{Binding Result}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 
 </ContentPage>

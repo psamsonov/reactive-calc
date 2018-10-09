@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using ReactiveUI;
+using DynamicData;
 
 namespace ReactiveCalculator
 {
@@ -20,6 +22,8 @@ namespace ReactiveCalculator
         public ICommand Negate { get; private set; }
         public ICommand Add { get; private set; }
         public ICommand Calculate { get; private set; }
+
+        
 
         public MainViewModel()
         {
@@ -87,6 +91,9 @@ namespace ReactiveCalculator
                 }
 
                 Number = total.ToString();
+                Expressions.Add(new Expression {Result = total});
+                    //this.RaisePropertyChanged(nameof(Expressions));
+            
             });
 
             this.WhenAnyValue(x => x.Number).Subscribe(_ => ValidateNumber());
@@ -121,11 +128,17 @@ namespace ReactiveCalculator
         private bool setNewNumber;
 
         private string number;
+
         
         public string Number
         {
             get => number;
             set { this.RaiseAndSetIfChanged(ref number, value); }
         }
+        
+        public ObservableCollection<Expression> Expressions { get; } = new ObservableCollection<Expression>();
+    
+    
+
     }
 }
