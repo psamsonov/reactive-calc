@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:ReactiveCalculator"
              x:Class="ReactiveCalculator.MainPage">
 
+    <ContentPage.BindingContext> <local:MainViewModel/></ContentPage.BindingContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -22,7 +23,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Entry Grid.Row="0" Grid.ColumnSpan="4" Grid.Column="0"/>
+        <Entry Grid.Row="0"
+               Grid.ColumnSpan="4"
+               Grid.Column="0"
+               HorizontalTextAlignment="End"
+               Keyboard="Numeric"
+               Text="{Binding Number}"/>
 
         <Button Text="%" Grid.Row="2" Grid.Column="0"/>
         <Button Text="√" Grid.Row="2" Grid.Column="1"/>
