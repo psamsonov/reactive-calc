@@ -20,7 +20,13 @@ namespace ReactiveCalculator
         {
             var main = bindable as MainViewModel;
             if (string.IsNullOrWhiteSpace(main.Number))
+            {
                 main.Number = "0";
+            }
+            else if (main.Number != "0")
+            {
+                main.Number = main.Number.Trim().TrimStart(new char[] {'0'});
+            }
         }
 
 
