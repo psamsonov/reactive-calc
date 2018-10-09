@@ -53,13 +53,13 @@
         <Button Text="1" Grid.Row="6" Grid.Column="0" Command="{Binding Append}" CommandParameter="1"/>
         <Button Text="2" Grid.Row="6" Grid.Column="1" Command="{Binding Append}" CommandParameter="2"/>
         <Button Text="3" Grid.Row="6" Grid.Column="2" Command="{Binding Append}" CommandParameter="3"/>
-        <Button Text="+" Grid.Row="6" Grid.Column="3"/>
+        <Button Text="+" Grid.Row="6" Grid.Column="3" Command="{Binding Add}"/>
 
 
         <Button Text="±" Grid.Row="7" Grid.Column="0" Command="{Binding Negate}"/>
         <Button Text="0" Grid.Row="7" Grid.Column="1" Command="{Binding Append}" CommandParameter="0"/>
         <Button Text="." Grid.Row="7" Grid.Column="2"/>
-        <Button Text="=" Grid.Row="7" Grid.Column="3"/>
+        <Button Text="=" Grid.Row="7" Grid.Column="3" Command="{Binding Calculate}"/>
     </Grid>
 
 </ContentPage>

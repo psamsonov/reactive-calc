@@ -10,16 +10,40 @@ namespace ReactiveCalculator
 {
     class MainViewModel : ReactiveObject
     {
-        
+
         public ICommand Append { get; private set; }
         public ICommand Clear { get; private set; }
+        public ICommand ClearEverything { get; set; }
         public ICommand Backspace { get; private set; }
+
+
         public ICommand Negate { get; private set; }
+        public ICommand Add { get; private set; }
+        public ICommand Calculate { get; private set; }
 
         public MainViewModel()
         {
-            Append = ReactiveCommand.Create<string>( (x) => { this.Number = Number += x; });
+            Append = ReactiveCommand.Create<string>((x) =>
+            {
+                if (this.setNewNumber)
+                {
+                    this.Number = x;
+                    this.setNewNumber = false;
+                }
+                else
+                {
+                    this.Number = Number += x;
+                }
+
+            });
             Clear = ReactiveCommand.Create( () => this.Number = "0");
+            ClearEverything = ReactiveCommand.Create(() =>
+            {
+                this.Number = "0";
+                savedNumbers.Clear();
+                savedOperators.Clear();
+            });
+
             Backspace = ReactiveCommand.Create(() => this.Number = this.Number.Substring(0, this.Number.Length - 1));
 
             Negate = ReactiveCommand.Create(() =>
@@ -40,9 +64,43 @@ namespace ReactiveCalculator
                 }
             );
 
+            Add = ReactiveCommand.Create(() =>
+            {
+                SaveNumber();
+                savedOperators.Enqueue(Operators.Addition);
+            });
+
+            Calculate = ReactiveCommand.Create(() =>
+            {
+                SaveNumber();
+                decimal total = savedNumbers.Dequeue();
+                while (savedOperators.Count > 0 && savedNumbers.Count > 0)
+                {
+                    switch (savedOperators.Dequeue())
+                    {
+                        case Operators.Addition:
+                            total += savedNumbers.Dequeue();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                Number = total.ToString();
+            });
+
             this.WhenAnyValue(x => x.Number).Subscribe(_ => ValidateNumber());
         }
-        
+
+        //Adds the existing number to the operations queue and sets the new number flag
+        private void SaveNumber()
+        {
+            if (Decimal.TryParse(number, out decimal parsedNumber))
+            {
+                savedNumbers.Enqueue(parsedNumber);
+                setNewNumber = true;
+            }
+        }
 
         private void ValidateNumber()
         {
@@ -55,6 +113,12 @@ namespace ReactiveCalculator
                 this.Number = this.Number.Trim().TrimStart(new char[] { '0' });
             }
         }
+
+        private Queue<decimal> savedNumbers = new Queue<decimal>();
+
+        private Queue<Operators> savedOperators = new Queue<Operators>();
+        
+        private bool setNewNumber;
 
         private string number;
         
