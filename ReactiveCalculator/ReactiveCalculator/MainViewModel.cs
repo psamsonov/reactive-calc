@@ -1,39 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.Forms;
+using ReactiveUI;
 
 namespace ReactiveCalculator
 {
-    class MainViewModel : BindableObject
+    class MainViewModel : ReactiveObject
     {
-        public static readonly BindableProperty NumberProperty = BindableProperty.Create(
-            nameof(Number),
-            typeof(string),
-            typeof(MainViewModel),
-            "0",
-            BindingMode.TwoWay,null, NumberChanged
-            
-        );
+        
+        public ICommand Append { get; private set; }
+        public ICommand Clear { get; private set; }
+        public ICommand Backspace { get; private set; }
 
-        private static void NumberChanged(BindableObject bindable, object oldvalue, object newvalue)
+        public MainViewModel()
         {
-            var main = bindable as MainViewModel;
-            if (string.IsNullOrWhiteSpace(main.Number))
+            Append = ReactiveCommand.Create<string>( (x) => { this.Number = Number += x; });
+            Clear = ReactiveCommand.Create( () => this.Number = "0");
+            Backspace = ReactiveCommand.Create(() => this.Number = this.Number.Substring(0, this.Number.Length - 1)); 
+
+
+            this.WhenAnyValue(x => x.Number).Subscribe(_ => ValidateNumber());
+        }
+        
+
+        private void ValidateNumber()
+        {
+            if (string.IsNullOrWhiteSpace(this.Number))
             {
-                main.Number = "0";
+                this.Number = "0";
             }
-            else if (main.Number != "0")
+            else if (this.Number != "0")
             {
-                main.Number = main.Number.Trim().TrimStart(new char[] {'0'});
+                this.Number = this.Number.Trim().TrimStart(new char[] { '0' });
             }
         }
 
-
+        private string number;
+        
         public string Number
         {
-            get => (string)this.GetValue(NumberProperty);
-            set => this.SetValue(NumberProperty,value); 
+            get => number;
+            set { this.RaiseAndSetIfChanged(ref number, value); }
         }
     }
 }
