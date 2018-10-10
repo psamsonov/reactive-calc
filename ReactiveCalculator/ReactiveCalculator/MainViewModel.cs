@@ -10,7 +10,7 @@ using DynamicData;
 
 namespace ReactiveCalculator
 {
-    class MainViewModel : ReactiveObject
+    public class MainViewModel : ReactiveObject
     {
 
         public ICommand Append { get; private set; }
@@ -76,7 +76,8 @@ namespace ReactiveCalculator
 
             Calculate = ReactiveCommand.Create(() =>
             {
-                SaveNumber();
+                if (!setNewNumber)
+                    SaveNumber();
                 decimal total = savedNumbers.Dequeue();
                 while (savedOperators.Count > 0 && savedNumbers.Count > 0)
                 {
